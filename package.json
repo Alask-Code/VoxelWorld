@@ -45,7 +45,7 @@
     "vite": "^2.8.6",
     "vite-plugin-electron": "^0.28.7",
     "vite-plugin-electron-renderer": "^0.14.5",
-    "zustand": "^5.0.3"
+    "zustand": "^5.0.16"
   },
   "devDependencies": {
     "@types/electron": "^1.4.38",
