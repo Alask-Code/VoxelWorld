@@ -5,8 +5,8 @@ import VoxelWorld from '../engine/VoxelWorld';
 import { useGameStore } from '../stores/game';
 import { useSettingsStore } from '../stores/settings';
 import requestGamePointerLock from '../engine/pointerLock';
-import InventoryPanel from '../components/HUDLayer/InventoryPanel';
-import GameHud from '../components/HUDLayer/GameHUD';
+import InventoryPanel from '../components/HUDLayer/Inventory/Panel';
+import HUDWrapper from '../components/HUDLayer/HUDWrapper';
 
 export default function Game() {
   const { worldId = '' } = useParams();
@@ -19,7 +19,6 @@ export default function Game() {
   const setSnapshot = useGameStore((state) => state.setSnapshot);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [saved, setSaved] = useState('Salvamento automático ativo');
   const [saving, setSaving] = useState(false);
   const uiScale = useSettingsStore((state) => state.uiScale);
   const saveRef = useRef<() => Promise<boolean>>(async () => false);
@@ -74,15 +73,12 @@ export default function Game() {
     const latest = useGameStore.getState();
     if (!latest.world || !latest.snapshot || saving) return false;
     setSaving(true);
-    setSaved('Salvando…');
     try {
       await saveWorld(latest.world.manifest.id, latest.snapshot);
-      setSaved(`Salvo às ${new Intl.DateTimeFormat('pt-BR', { timeStyle: 'short' }).format(new Date())}`);
       setError('');
       return true;
     } catch (reason) {
       const message = reason instanceof Error ? reason.message : 'Falha ao salvar o mundo.';
-      setSaved('Falha no salvamento');
       setError(message);
       return false;
     } finally {
@@ -156,14 +152,14 @@ export default function Game() {
   return (
     <main
       className={`relative flex h-screen items-center justify-center overflow-hidden bg-[#303030] ${
-        submerged ? 'border-[24px] border-blue-700/70' : ''
+        submerged ? 'border-12 border-blue-700/70' : ''
       }`}
       style={{ '--ui-scale': uiScale } as React.CSSProperties}
     >
       <div className="size-full bg-[#303030]" ref={canvasRef}>
         <VoxelWorld world={world} paused={overlay !== 'none'} onError={reportEngineError} />
       </div>
-      <GameHud world={world} snapshot={snapshot} saved={saved} onOpenInventory={openInventory} />
+      <HUDWrapper world={world} snapshot={snapshot} onOpenInventory={openInventory} />
       {error && (
         <p
           className="fixed left-1/2 top-4 z-50 -translate-x-1/2 border-2 border-[#171717] bg-[#8b2929] p-3 font-mono text-sm text-white shadow-[inset_2px_2px_0_#bd5555,inset_-2px_-2px_0_#501313,3px_3px_0_#111]"

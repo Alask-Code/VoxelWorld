@@ -1,6 +1,6 @@
 import { Canvas } from '@react-three/fiber';
 import React from 'react';
-import InventoryCharacterModel from '../InventoryCharacterModel';
+import InventoryCharacterModel from '../CharacterModel';
 
 export default function InventoryCharacterPreview() {
   return (

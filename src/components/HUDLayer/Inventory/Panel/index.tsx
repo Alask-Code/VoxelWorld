@@ -1,21 +1,21 @@
 import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
-import { itemById, itemName, ITEMS } from '../../../domain/content';
+import { itemById, itemName, ITEMS } from '../../../../domain/content';
 import {
   returnStacksToInventory,
   transferStackAtCursor,
   transferStackBetweenSlots,
   removeItem,
   addItem
-} from '../../../domain/inventory';
-import { RECIPES, findCraftingRecipe, Recipe, craft } from '../../../domain/recipes';
-import { ItemStack, DroppedItemSnapshot, WorldSnapshot } from '../../../domain/world';
-import { useGameStore } from '../../../stores/game';
-import ItemIcon from '../../ItemIcon';
-import stackLabel from '../stackLabel';
-import DurabilityBar from '../DurabilityBar';
-import InventoryCharacterPreview from '../InventoryCharacterPreview';
+} from '../../../../domain/inventory';
+import { RECIPES, findCraftingRecipe, Recipe, craft } from '../../../../domain/recipes';
+import { ItemStack, DroppedItemSnapshot, WorldSnapshot } from '../../../../domain/world';
+import { useGameStore } from '../../../../stores/game';
+import ItemIcon from '../../../ItemIcon';
+import stackLabel from '../../stackLabel';
+import DurabilityBar from '../../DurabilityBar';
+import InventoryCharacterPreview from '../CharacterPreview';
 
 export default function InventoryPanel({
   snapshot,
@@ -254,7 +254,7 @@ export default function InventoryPanel({
                       index < 9 ? 'is-hotbar' : ''
                     } ${
                       index === selectedSlot
-                        ? 'is-current !border-white !bg-[#aaa] !shadow-[inset_2px_2px_0_#eee,inset_-2px_-2px_0_#666,0_0_0_2px_#444]'
+                        ? 'is-current border-white! bg-[#aaa]! shadow-[inset_2px_2px_0_#eee,inset_-2px_-2px_0_#666,0_0_0_2px_#444]!'
                         : ''
                     }`}
                     key={stack?.itemId}
@@ -427,7 +427,7 @@ export default function InventoryPanel({
       {cursor &&
         createPortal(
           <div
-            className="pointer-events-none fixed z-[100] flex -translate-x-1/2 -translate-y-1/2 items-center gap-1 drop-shadow-[2px_2px_0_#000]"
+            className="pointer-events-none fixed z-100 flex -translate-1/2 items-center gap-1 drop-shadow-[2px_2px_0_#000]"
             aria-hidden="true"
             style={{ left: cursorPosition.x, top: cursorPosition.y }}
           >
@@ -440,7 +440,7 @@ export default function InventoryPanel({
         )}
       {catalogError && (
         <p
-          className="fixed bottom-5 left-1/2 z-[110] w-max max-w-[90vw] -translate-x-1/2 border-2 border-black bg-[#8b2929] p-3 text-center text-xs font-bold text-white shadow-[inset_2px_2px_0_#bd5555,inset_-2px_-2px_0_#501313,3px_3px_0_#000] [text-shadow:1px_1px_0_#000]"
+          className="fixed bottom-5 left-1/2 z-110 w-max max-w-[90vw] -translate-x-1/2 border-2 border-black bg-[#8b2929] p-3 text-center text-xs font-bold text-white shadow-[inset_2px_2px_0_#bd5555,inset_-2px_-2px_0_#501313,3px_3px_0_#000] [text-shadow:1px_1px_0_#000]"
           role="alert"
         >
           {catalogError}
