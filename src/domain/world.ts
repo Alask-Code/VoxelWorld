@@ -144,11 +144,8 @@ export function terrainAt(x: number, z: number, seed: number): TerrainPoint {
   const temperature = valueNoise(x, z, seed ^ 0x2c1b3c6d, 170);
   const moisture = valueNoise(x, z, seed ^ 0x13579bdf, 115);
   const height = Math.max(4, Math.min(WORLD_HEIGHT - 3, Math.round(8 + broad * 13 + detail * 4)));
-  const surface = height <= SEA_LEVEL + 1 || (temperature > 0.62 && moisture < 0.42)
-    ? 'sand'
-    : temperature < 0.24
-      ? 'snow'
-      : 'grass';
+  const surface =
+    height <= SEA_LEVEL + 1 || (temperature > 0.62 && moisture < 0.42) ? 'sand' : temperature < 0.24 ? 'snow' : 'grass';
   return { height, surface };
 }
 
@@ -232,7 +229,16 @@ export function createChunkGeometryData(
       const worldZ = originZ + localZ;
       const { height, surface } = terrainAt(worldX, worldZ, seed);
       for (let y = 0; y <= height; y += 1) {
-        let block = y === 0 ? 'bedrock' : y <= height - 4 ? 'stone' : y < height ? (surface === 'sand' ? 'sand' : 'dirt') : surface;
+        let block =
+          y === 0
+            ? 'bedrock'
+            : y <= height - 4
+            ? 'stone'
+            : y < height
+            ? surface === 'sand'
+              ? 'sand'
+              : 'dirt'
+            : surface;
         if (block === 'stone' && y < 28 && hash2d(worldX + y * 11, worldZ - y * 7, seed ^ 0x3c6ef372) > 0.994) {
           block = 'coal_ore';
         }
@@ -307,12 +313,102 @@ export function createChunkGeometryData(
   const waterNormals: number[] = [];
   const waterUvs: number[] = [];
   const faces = [
-    { neighbor: [1, 0, 0], normal: [1, 0, 0], vertices: [[1, 0, 0], [1, 1, 0], [1, 1, 1], [1, 0, 1]], uvs: [[0, 0], [0, 1], [1, 1], [1, 0]] },
-    { neighbor: [-1, 0, 0], normal: [-1, 0, 0], vertices: [[0, 0, 1], [0, 1, 1], [0, 1, 0], [0, 0, 0]], uvs: [[0, 0], [0, 1], [1, 1], [1, 0]] },
-    { neighbor: [0, 1, 0], normal: [0, 1, 0], vertices: [[0, 1, 1], [1, 1, 1], [1, 1, 0], [0, 1, 0]], uvs: [[0, 0], [1, 0], [1, 1], [0, 1]] },
-    { neighbor: [0, -1, 0], normal: [0, -1, 0], vertices: [[0, 0, 0], [1, 0, 0], [1, 0, 1], [0, 0, 1]], uvs: [[0, 0], [1, 0], [1, 1], [0, 1]] },
-    { neighbor: [0, 0, 1], normal: [0, 0, 1], vertices: [[1, 0, 1], [1, 1, 1], [0, 1, 1], [0, 0, 1]], uvs: [[0, 0], [0, 1], [1, 1], [1, 0]] },
-    { neighbor: [0, 0, -1], normal: [0, 0, -1], vertices: [[0, 0, 0], [0, 1, 0], [1, 1, 0], [1, 0, 0]], uvs: [[0, 0], [0, 1], [1, 1], [1, 0]] }
+    {
+      neighbor: [1, 0, 0],
+      normal: [1, 0, 0],
+      vertices: [
+        [1, 0, 0],
+        [1, 1, 0],
+        [1, 1, 1],
+        [1, 0, 1]
+      ],
+      uvs: [
+        [0, 0],
+        [0, 1],
+        [1, 1],
+        [1, 0]
+      ]
+    },
+    {
+      neighbor: [-1, 0, 0],
+      normal: [-1, 0, 0],
+      vertices: [
+        [0, 0, 1],
+        [0, 1, 1],
+        [0, 1, 0],
+        [0, 0, 0]
+      ],
+      uvs: [
+        [0, 0],
+        [0, 1],
+        [1, 1],
+        [1, 0]
+      ]
+    },
+    {
+      neighbor: [0, 1, 0],
+      normal: [0, 1, 0],
+      vertices: [
+        [0, 1, 1],
+        [1, 1, 1],
+        [1, 1, 0],
+        [0, 1, 0]
+      ],
+      uvs: [
+        [0, 0],
+        [1, 0],
+        [1, 1],
+        [0, 1]
+      ]
+    },
+    {
+      neighbor: [0, -1, 0],
+      normal: [0, -1, 0],
+      vertices: [
+        [0, 0, 0],
+        [1, 0, 0],
+        [1, 0, 1],
+        [0, 0, 1]
+      ],
+      uvs: [
+        [0, 0],
+        [1, 0],
+        [1, 1],
+        [0, 1]
+      ]
+    },
+    {
+      neighbor: [0, 0, 1],
+      normal: [0, 0, 1],
+      vertices: [
+        [1, 0, 1],
+        [1, 1, 1],
+        [0, 1, 1],
+        [0, 0, 1]
+      ],
+      uvs: [
+        [0, 0],
+        [0, 1],
+        [1, 1],
+        [1, 0]
+      ]
+    },
+    {
+      neighbor: [0, 0, -1],
+      normal: [0, 0, -1],
+      vertices: [
+        [0, 0, 0],
+        [0, 1, 0],
+        [1, 1, 0],
+        [1, 0, 0]
+      ],
+      uvs: [
+        [0, 0],
+        [0, 1],
+        [1, 1],
+        [1, 0]
+      ]
+    }
   ];
   const triangles = [0, 1, 2, 0, 2, 3];
   const faceBrightness = [0.82, 0.68, 1, 0.52, 0.9, 0.74];
@@ -325,11 +421,9 @@ export function createChunkGeometryData(
         if (block === 'air') continue;
         for (let faceIndex = 0; faceIndex < faces.length; faceIndex += 1) {
           const face = faces[faceIndex];
-          const adjacent = blocks[indexOf(
-            localX + 1 + face.neighbor[0],
-            y + face.neighbor[1],
-            localZ + 1 + face.neighbor[2]
-          )] ?? 'air';
+          const adjacent =
+            blocks[indexOf(localX + 1 + face.neighbor[0], y + face.neighbor[1], localZ + 1 + face.neighbor[2])] ??
+            'air';
           if (block === 'water' ? adjacent !== 'air' : adjacent !== 'air' && adjacent !== 'water') continue;
           const facePositions = block === 'water' ? waterPositions : positions;
           const faceNormals = block === 'water' ? waterNormals : normals;

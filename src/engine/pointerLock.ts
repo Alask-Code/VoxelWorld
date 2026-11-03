@@ -1,9 +1,6 @@
 const POINTER_LOCK_ERROR = 'Não foi possível capturar o cursor. Tente novamente.';
 
-export default function requestGamePointerLock(
-  canvas: HTMLCanvasElement,
-  onError: (message: string) => void
-): void {
+export default function requestGamePointerLock(canvas: HTMLCanvasElement, onError: (message: string) => void): void {
   let settled = false;
   let timeout: number | undefined;
   let handleError = () => {};
@@ -30,16 +27,13 @@ export default function requestGamePointerLock(
   document.addEventListener('pointerlockchange', handleChange);
 
   try {
-    Promise.resolve(canvas.requestPointerLock()).then(
-      () => {
-        if (document.pointerLockElement === canvas || settled) {
-          cleanup();
-          return;
-        }
-        timeout = window.setTimeout(handleError, 1500);
-      },
-      handleError
-    );
+    Promise.resolve(canvas.requestPointerLock()).then(() => {
+      if (document.pointerLockElement === canvas || settled) {
+        cleanup();
+        return;
+      }
+      timeout = window.setTimeout(handleError, 1500);
+    }, handleError);
   } catch {
     handleError();
   }

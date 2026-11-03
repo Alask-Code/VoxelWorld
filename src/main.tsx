@@ -10,7 +10,7 @@ if (!rootElement) throw new Error('Elemento raiz da aplicação não encontrado.
 const root = createRoot(rootElement);
 root.render(
   <StrictMode>
-    <Suspense fallback={<main className="loading-screen">Abrindo Voxel World…</main>}>
+    <Suspense fallback={<main>Abrindo Voxel World…</main>}>
       <Lazy />
     </Suspense>
   </StrictMode>

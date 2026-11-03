@@ -2,10 +2,7 @@ import type { BlockDefinition } from '../domain/content';
 
 const MINING_TIME_FLOOR_SECONDS = 0.1;
 
-export function hasCorrectMiningTool(
-  block: Pick<BlockDefinition, 'toolTags'>,
-  toolId: string | undefined
-): boolean {
+export function hasCorrectMiningTool(block: Pick<BlockDefinition, 'toolTags'>, toolId: string | undefined): boolean {
   return block.toolTags.length === 0 || block.toolTags.some((tag) => toolId?.endsWith(`_${tag}`));
 }
 

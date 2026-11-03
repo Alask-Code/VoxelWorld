@@ -27,26 +27,33 @@ export default function WorldCreation() {
   };
 
   return (
-    <main className="page-screen">
-      <header className="page-header">
-        <Link className="brand-link" to="/">VOXEL<span>WORLD</span></Link>
-        <span className="header-note">CRIAÇÃO DE MUNDO</span>
+    <main>
+      <header>
+        <Link to="/">
+          VOXEL<span>WORLD</span>
+        </Link>
+        <span>CRIAÇÃO DE MUNDO</span>
       </header>
-      <section className="form-page">
-        <p className="eyebrow">PREPARE SUA PRÓXIMA JORNADA</p>
+      <section>
+        <p>PREPARE SUA PRÓXIMA JORNADA</p>
         <h1>Criar mundo</h1>
-        <form className="world-form" onSubmit={(event) => void submit(event)}>
+        <form onSubmit={(event) => void submit(event)}>
           <label>
             Nome do mundo
             <input maxLength={32} onChange={(event) => setName(event.target.value)} required value={name} />
           </label>
           <label>
-            Seed <span className="muted">(deixe em branco para gerar uma aleatória)</span>
-            <input maxLength={128} onChange={(event) => setSeed(event.target.value)} placeholder="Ex.: bosque-azul-2048" value={seed} />
+            Seed <span>(deixe em branco para gerar uma aleatória)</span>
+            <input
+              maxLength={128}
+              onChange={(event) => setSeed(event.target.value)}
+              placeholder="Ex.: bosque-azul-2048"
+              value={seed}
+            />
           </label>
           <fieldset>
             <legend>Modo de jogo</legend>
-            <div className="choice-row">
+            <div>
               <label className={`choice-card ${mode === 'survival' ? 'is-selected' : ''}`}>
                 <input checked={mode === 'survival'} name="mode" onChange={() => setMode('survival')} type="radio" />
                 <strong>Sobrevivência</strong>
@@ -68,14 +75,14 @@ export default function WorldCreation() {
               <option value="hard">Difícil</option>
             </select>
           </label>
-          <label className="check-row">
+          <label>
             <input checked={structures} onChange={(event) => setStructures(event.target.checked)} type="checkbox" />
             <span>Gerar estruturas do mundo</span>
           </label>
-          {error && <p className="notice notice-error" role="alert">{error}</p>}
-          <div className="form-actions">
-            <Link className="button" to="/worlds">Voltar</Link>
-            <button className="button button-primary" disabled={busy} type="submit">
+          {error && <p role="alert">{error}</p>}
+          <div>
+            <Link to="/worlds">Voltar</Link>
+            <button disabled={busy} type="submit">
               {busy ? 'Criando…' : 'Criar e jogar'}
             </button>
           </div>

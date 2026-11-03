@@ -10,9 +10,7 @@ let mainWindow: ReturnType<typeof createWindow> | null = null;
 function isTrustedApplicationContents(webContents: Electron.WebContents | null): boolean {
   if (!webContents || webContents !== mainWindow?.webContents) return false;
   const url = webContents.getURL();
-  return isDev
-    ? url.startsWith('http://localhost:3000')
-    : url.startsWith('file://');
+  return isDev ? url.startsWith('http://localhost:3000') : url.startsWith('file://');
 }
 
 function openApplication() {
@@ -34,8 +32,8 @@ function openApplication() {
 }
 
 app.whenReady().then(() => {
-  session.defaultSession.setPermissionCheckHandler((webContents, permission) =>
-    permission === 'pointerLock' && isTrustedApplicationContents(webContents)
+  session.defaultSession.setPermissionCheckHandler(
+    (webContents, permission) => permission === 'pointerLock' && isTrustedApplicationContents(webContents)
   );
   session.defaultSession.setPermissionRequestHandler((webContents, permission, callback) =>
     callback(permission === 'pointerLock' && isTrustedApplicationContents(webContents))

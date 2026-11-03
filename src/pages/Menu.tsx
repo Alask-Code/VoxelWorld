@@ -1,35 +1,42 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import SafeView from '../components/UiLayer/SafeView';
+import LinkButton from '../components/UiLayer/LinkButton';
 
 export default function Menu() {
   return (
-    <main className="menu-screen">
-      <div className="menu-topline">
-        <span>VOXEL WORLD</span>
-        <span>EDIÇÃO DE DESENVOLVIMENTO</span>
-      </div>
-      <section className="menu-hero">
-        <p className="eyebrow">UM MUNDO, BLOCO POR BLOCO</p>
-        <h1>Voxel<br /><span>World</span></h1>
-        <p className="menu-description">
-          Explore um mundo moldado pela sua seed. Reúna recursos, construa seu abrigo e descubra o que existe além do horizonte.
-        </p>
-        <nav className="menu-actions" aria-label="Menu principal">
-          <Link className="button button-primary" to="/worlds">Jogar</Link>
-          <Link className="button" to="/worlds/new">Criar mundo</Link>
-          <Link className="button" to="/settings">Configurações</Link>
-          <Link className="button" to="/credits">Créditos</Link>
-          {window.gameApi && (
-            <button className="button button-quiet" onClick={() => void window.gameApi?.closeApp()} type="button">
-              Sair
-            </button>
-          )}
+    <SafeView
+      style={{
+        backgroundImage: "url('assets/images/background.png')",
+        backgroundRepeat: 'no-repeat',
+        backgroundClip: 'content-box',
+        backgroundSize: 'cover'
+      }}
+    >
+      <section
+        className="flex flex-col items-center justify-evenly gap-12 h-full
+      
+      "
+      >
+        <h1 className="text-9xl relative  shadow-gray-600">
+          Voxel
+          <span className=" text-green-400"> World</span>
+          <span
+            className="text-[16pt] -rotate-12 text-center absolute inset-0 top-2/3 left-2/3 size-fit line-clamp-1 whitespace-nowrap text-amber-400
+          "
+          >
+            Explore um mundo moldado pela sua seed.
+          </span>
+        </h1>
+
+        <nav className="flex flex-col gap-2" aria-label="Menu principal">
+          <LinkButton to="/worlds">Jogar</LinkButton>
+          <div className="flex *:w-1/2 gap-2">
+            <LinkButton to="/settings">Ajustes</LinkButton>
+            <LinkButton to="/credits">Créditos</LinkButton>
+          </div>
+          {window.gameApi && <LinkButton to="/exit">Sair</LinkButton>}
         </nav>
       </section>
-      <footer className="menu-footer">
-        <span>SINGLE-PLAYER · MUNDO LOCAL</span>
-        <span>PROTÓTIPO VOXEL 0.1</span>
-      </footer>
-    </main>
+    </SafeView>
   );
 }

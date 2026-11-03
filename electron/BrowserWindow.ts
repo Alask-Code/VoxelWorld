@@ -8,7 +8,6 @@ export default function createWindow(url: string) {
     minWidth: 1024,
     minHeight: 640,
     icon: join(__dirname, '../', 'resources', 'icon.png'),
-    backgroundColor: '#101312',
     webPreferences: {
       preload: join(__dirname, 'preload.js'),
       contextIsolation: true,

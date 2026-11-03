@@ -22,11 +22,9 @@ export const BLOCK_TEXTURE_IDS = [
   'furnace_top'
 ] as const;
 
-export type BlockTextureId = (typeof BLOCK_TEXTURE_IDS)[number];
+export type BlockTextureId = typeof BLOCK_TEXTURE_IDS[number];
 
-const textureIndex = new Map<BlockTextureId, number>(
-  BLOCK_TEXTURE_IDS.map((textureId, index) => [textureId, index])
-);
+const textureIndex = new Map<BlockTextureId, number>(BLOCK_TEXTURE_IDS.map((textureId, index) => [textureId, index]));
 
 export function textureForBlockFace(blockId: string, faceIndex: number): BlockTextureId {
   if (blockId === 'grass') {

@@ -18,6 +18,7 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "esnext",
+    "rootDir": "../electron",
     "outDir": "../dist-electron"
   },
   "exclude": ["node_modules"],

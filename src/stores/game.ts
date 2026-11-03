@@ -28,29 +28,31 @@ export const useGameStore = create<GameState>((set) => ({
   oxygenTicks: 300,
   submerged: false,
   miningProgress: 0,
-  setWorld: (world) => set({
-    world,
-    snapshot: world.snapshot,
-    overlay: 'none',
-    oxygenTicks: 300,
-    submerged: false,
-    miningProgress: 0
-  }),
+  setWorld: (world) =>
+    set({
+      world,
+      snapshot: world.snapshot,
+      overlay: 'none',
+      oxygenTicks: 300,
+      submerged: false,
+      miningProgress: 0
+    }),
   setSnapshot: (snapshot) => set({ snapshot }),
   setOverlay: (overlay) => set({ overlay }),
   setBreath: (oxygenTicks, submerged) => set({ oxygenTicks, submerged }),
   setMiningProgress: (progress) => {
     const miningProgress = Math.max(0, Math.min(1, progress));
-    set((state) => state.miningProgress === miningProgress ? state : { miningProgress });
+    set((state) => (state.miningProgress === miningProgress ? state : { miningProgress }));
   },
   selectSlot: (slot) => set({ selectedSlot: Math.max(0, Math.min(8, slot)) }),
-  clearWorld: () => set({
-    world: null,
-    snapshot: null,
-    overlay: 'none',
-    selectedSlot: 0,
-    oxygenTicks: 300,
-    submerged: false,
-    miningProgress: 0
-  })
+  clearWorld: () =>
+    set({
+      world: null,
+      snapshot: null,
+      overlay: 'none',
+      selectedSlot: 0,
+      oxygenTicks: 300,
+      submerged: false,
+      miningProgress: 0
+    })
 }));

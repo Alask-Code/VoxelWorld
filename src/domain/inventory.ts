@@ -66,30 +66,32 @@ export function returnStacksToInventory(
   const next = inventory.map((stack) => (stack ? { ...stack } : null));
   const remainder: ItemStack[] = [];
 
-  stacks.filter((stack): stack is ItemStack => Boolean(stack)).forEach((stack) => {
-    let remaining = stack.count;
-    const maxStack = itemById.get(stack.itemId)?.maxStack ?? 64;
-    next.forEach((current, index) => {
-      if (
-        remaining > 0 &&
-        current?.itemId === stack.itemId &&
-        (current.damage ?? 0) === (stack.damage ?? 0) &&
-        current.count < maxStack
-      ) {
-        const amount = Math.min(remaining, maxStack - current.count);
-        next[index] = { ...current, count: current.count + amount };
-        remaining -= amount;
-      }
+  stacks
+    .filter((stack): stack is ItemStack => Boolean(stack))
+    .forEach((stack) => {
+      let remaining = stack.count;
+      const maxStack = itemById.get(stack.itemId)?.maxStack ?? 64;
+      next.forEach((current, index) => {
+        if (
+          remaining > 0 &&
+          current?.itemId === stack.itemId &&
+          (current.damage ?? 0) === (stack.damage ?? 0) &&
+          current.count < maxStack
+        ) {
+          const amount = Math.min(remaining, maxStack - current.count);
+          next[index] = { ...current, count: current.count + amount };
+          remaining -= amount;
+        }
+      });
+      next.forEach((current, index) => {
+        if (remaining > 0 && !current) {
+          const amount = Math.min(remaining, maxStack);
+          next[index] = { ...stack, count: amount };
+          remaining -= amount;
+        }
+      });
+      if (remaining > 0) remainder.push({ ...stack, count: remaining });
     });
-    next.forEach((current, index) => {
-      if (remaining > 0 && !current) {
-        const amount = Math.min(remaining, maxStack);
-        next[index] = { ...stack, count: amount };
-        remaining -= amount;
-      }
-    });
-    if (remaining > 0) remainder.push({ ...stack, count: remaining });
-  });
 
   return { inventory: next, remainder };
 }

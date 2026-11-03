@@ -39,7 +39,9 @@ function validateWorld(value: unknown): StoredWorld {
     !snapshot.player ||
     !Array.isArray(snapshot.player.position) ||
     snapshot.player.position.length !== 3 ||
-    !snapshot.player.position.every((coordinate) => Number.isFinite(coordinate) && Math.abs(coordinate) <= 10_000_000) ||
+    !snapshot.player.position.every(
+      (coordinate) => Number.isFinite(coordinate) && Math.abs(coordinate) <= 10_000_000
+    ) ||
     !Number.isFinite(snapshot.player.health) ||
     snapshot.player.health < 0 ||
     snapshot.player.health > 20 ||
@@ -67,37 +69,42 @@ function validateWorld(value: unknown): StoredWorld {
   if (
     !Array.isArray(droppedItems) ||
     droppedItems.length > 10_000 ||
-    droppedItems.some((drop) =>
-      !drop ||
-      typeof drop.id !== 'string' ||
-      drop.id.length < 1 ||
-      drop.id.length > 128 ||
-      !ITEM_ID_PATTERN.test(drop.itemId) ||
-      !Number.isInteger(drop.count) ||
-      drop.count < 1 ||
-      drop.count > 64 ||
-      !Array.isArray(drop.position) ||
-      drop.position.length !== 3 ||
-      !drop.position.every((coordinate) => Number.isFinite(coordinate) && Math.abs(coordinate) <= 10_000_000) ||
-      (drop.velocity !== undefined &&
-        (!Array.isArray(drop.velocity) ||
-          drop.velocity.length !== 3 ||
-          !drop.velocity.every((component) => Number.isFinite(component) && Math.abs(component) <= 100))) ||
-      !Number.isInteger(drop.pickupAfterTick) ||
-      drop.pickupAfterTick < 0
+    droppedItems.some(
+      (drop) =>
+        !drop ||
+        typeof drop.id !== 'string' ||
+        drop.id.length < 1 ||
+        drop.id.length > 128 ||
+        !ITEM_ID_PATTERN.test(drop.itemId) ||
+        !Number.isInteger(drop.count) ||
+        drop.count < 1 ||
+        drop.count > 64 ||
+        !Array.isArray(drop.position) ||
+        drop.position.length !== 3 ||
+        !drop.position.every((coordinate) => Number.isFinite(coordinate) && Math.abs(coordinate) <= 10_000_000) ||
+        (drop.velocity !== undefined &&
+          (!Array.isArray(drop.velocity) ||
+            drop.velocity.length !== 3 ||
+            !drop.velocity.every((component) => Number.isFinite(component) && Math.abs(component) <= 100))) ||
+        !Number.isInteger(drop.pickupAfterTick) ||
+        drop.pickupAfterTick < 0
     )
   ) {
     throw new Error('O save contém um item dropado inválido.');
   }
   const stacks = [...snapshot.inventory, ...snapshot.player.armor, snapshot.player.offhand, ...droppedItems];
-  if (stacks.some((stack) => stack !== null && (
-    !stack ||
-    !ITEM_ID_PATTERN.test(stack.itemId) ||
-    !Number.isInteger(stack.count) ||
-    stack.count < 1 ||
-    stack.count > 64 ||
-    (stack.damage !== undefined && (!Number.isFinite(stack.damage) || stack.damage < 0))
-  ))) {
+  if (
+    stacks.some(
+      (stack) =>
+        stack !== null &&
+        (!stack ||
+          !ITEM_ID_PATTERN.test(stack.itemId) ||
+          !Number.isInteger(stack.count) ||
+          stack.count < 1 ||
+          stack.count > 64 ||
+          (stack.damage !== undefined && (!Number.isFinite(stack.damage) || stack.damage < 0)))
+    )
+  ) {
     throw new Error('O save contém uma pilha de item inválida.');
   }
   for (const [key, block] of Object.entries(snapshot.blockEdits)) {

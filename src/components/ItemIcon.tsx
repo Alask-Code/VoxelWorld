@@ -158,7 +158,7 @@ export default function ItemIcon({ itemId }: { itemId: string }) {
   const block = item?.category === 'block' ? blockById.get(item.placeBlock ?? itemId) : undefined;
   if (block) {
     return (
-      <svg aria-hidden="true" className="item-icon is-block" shapeRendering="crispEdges" viewBox="0 0 16 16">
+      <svg aria-hidden="true" shapeRendering="crispEdges" viewBox="0 0 16 16">
         <defs>
           <clipPath id={clipId}>
             <path d="M2 5 8 9v6l-6-3z" />
@@ -178,7 +178,7 @@ export default function ItemIcon({ itemId }: { itemId: string }) {
   }
 
   return (
-    <svg aria-hidden="true" className="item-icon" shapeRendering="crispEdges" viewBox="0 0 16 16">
+    <svg aria-hidden="true" shapeRendering="crispEdges" viewBox="0 0 16 16">
       {paths.map(({ color, path }) => (
         <path d={path} fill={color} key={color} />
       ))}

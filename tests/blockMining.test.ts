@@ -10,10 +10,7 @@ export default function testBlockMining() {
   assert.ok(correctToolTime < wrongToolTime);
   assert.equal(hasCorrectMiningTool({ toolTags: ['axe'] }, 'wooden_pickaxe'), false);
   assert.equal(hasCorrectMiningTool({ toolTags: ['axe'] }, 'wooden_axe'), true);
-  assert.equal(
-    blockDropForTool({ drops: ['dirt'], toolTags: ['shovel'] }, 'wooden_pickaxe', true),
-    'dirt'
-  );
+  assert.equal(blockDropForTool({ drops: ['dirt'], toolTags: ['shovel'] }, 'wooden_pickaxe', true), 'dirt');
   assert.equal(
     blockDropForTool(
       { drops: ['cobblestone'], toolTags: ['pickaxe'], requiresCorrectToolForDrop: true },

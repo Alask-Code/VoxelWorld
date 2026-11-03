@@ -14,15 +14,89 @@ export interface Recipe {
 }
 
 export const RECIPES: Recipe[] = [
-  { id: 'oak_planks', name: 'Tábuas de carvalho', type: 'shapeless', width: 1, height: 1, pattern: ['oak_log'], result: { itemId: 'oak_planks', count: 4 } },
-  { id: 'sticks', name: 'Gravetos', type: 'shaped', width: 1, height: 2, pattern: ['oak_planks', 'oak_planks'], result: { itemId: 'stick', count: 4 } },
-  { id: 'crafting_table', name: 'Bancada de trabalho', type: 'shaped', width: 2, height: 2, pattern: ['oak_planks', 'oak_planks', 'oak_planks', 'oak_planks'], result: { itemId: 'crafting_table', count: 1 } },
-  { id: 'wooden_pickaxe', name: 'Picareta de madeira', type: 'shaped', width: 3, height: 2, pattern: ['oak_planks', 'oak_planks', 'oak_planks', null, 'stick', null], result: { itemId: 'wooden_pickaxe', count: 1 } },
-  { id: 'wooden_sword', name: 'Espada de madeira', type: 'shaped', width: 1, height: 2, pattern: ['oak_planks', 'stick'], result: { itemId: 'wooden_sword', count: 1 } },
-  { id: 'wooden_axe', name: 'Machado de madeira', type: 'shaped', width: 2, height: 2, pattern: ['oak_planks', 'oak_planks', 'oak_planks', 'stick'], result: { itemId: 'wooden_axe', count: 1 } },
-  { id: 'wooden_hoe', name: 'Rastelo de madeira', type: 'shaped', width: 2, height: 2, pattern: ['oak_planks', 'oak_planks', null, 'stick'], result: { itemId: 'wooden_hoe', count: 1 } },
-  { id: 'wooden_shovel', name: 'Pá de madeira', type: 'shaped', width: 1, height: 2, pattern: ['oak_planks', 'stick'], result: { itemId: 'wooden_shovel', count: 1 } },
-  { id: 'bread', name: 'Pão assado', type: 'smelting', width: 1, height: 1, pattern: ['wheat'], result: { itemId: 'bread', count: 1 }, experience: 0.35, cookTicks: 200 }
+  {
+    id: 'oak_planks',
+    name: 'Tábuas de carvalho',
+    type: 'shapeless',
+    width: 1,
+    height: 1,
+    pattern: ['oak_log'],
+    result: { itemId: 'oak_planks', count: 4 }
+  },
+  {
+    id: 'sticks',
+    name: 'Gravetos',
+    type: 'shaped',
+    width: 1,
+    height: 2,
+    pattern: ['oak_planks', 'oak_planks'],
+    result: { itemId: 'stick', count: 4 }
+  },
+  {
+    id: 'crafting_table',
+    name: 'Bancada de trabalho',
+    type: 'shaped',
+    width: 2,
+    height: 2,
+    pattern: ['oak_planks', 'oak_planks', 'oak_planks', 'oak_planks'],
+    result: { itemId: 'crafting_table', count: 1 }
+  },
+  {
+    id: 'wooden_pickaxe',
+    name: 'Picareta de madeira',
+    type: 'shaped',
+    width: 3,
+    height: 2,
+    pattern: ['oak_planks', 'oak_planks', 'oak_planks', null, 'stick', null],
+    result: { itemId: 'wooden_pickaxe', count: 1 }
+  },
+  {
+    id: 'wooden_sword',
+    name: 'Espada de madeira',
+    type: 'shaped',
+    width: 1,
+    height: 2,
+    pattern: ['oak_planks', 'stick'],
+    result: { itemId: 'wooden_sword', count: 1 }
+  },
+  {
+    id: 'wooden_axe',
+    name: 'Machado de madeira',
+    type: 'shaped',
+    width: 2,
+    height: 2,
+    pattern: ['oak_planks', 'oak_planks', 'oak_planks', 'stick'],
+    result: { itemId: 'wooden_axe', count: 1 }
+  },
+  {
+    id: 'wooden_hoe',
+    name: 'Rastelo de madeira',
+    type: 'shaped',
+    width: 2,
+    height: 2,
+    pattern: ['oak_planks', 'oak_planks', null, 'stick'],
+    result: { itemId: 'wooden_hoe', count: 1 }
+  },
+  {
+    id: 'wooden_shovel',
+    name: 'Pá de madeira',
+    type: 'shaped',
+    width: 1,
+    height: 2,
+    pattern: ['oak_planks', 'stick'],
+    result: { itemId: 'wooden_shovel', count: 1 }
+  },
+  {
+    id: 'bread',
+    name: 'Pão assado',
+    type: 'smelting',
+    width: 1,
+    height: 1,
+    pattern: ['wheat'],
+    result: { itemId: 'bread', count: 1 },
+    experience: 0.35,
+    cookTicks: 200
+  }
 ];
 
 function trimGrid(grid: Array<ItemStack | null>, width: number, height: number) {
@@ -52,15 +126,20 @@ export function findCraftingRecipe(grid: Array<ItemStack | null>, width: number,
   if (occupied.length === 0) return null;
   const normalized = trimGrid(grid, width, height);
 
-  return RECIPES.find((recipe) => {
-    if (recipe.type === 'smelting') return false;
-    if (recipe.type === 'shapeless') {
-      const expected = recipe.pattern.filter((item): item is string => Boolean(item));
-      return occupied.length === expected.length && expected.every((itemId) => occupied.some((stack) => stack.itemId === itemId));
-    }
-    if (normalized.width !== recipe.width || normalized.height !== recipe.height) return false;
-    return recipe.pattern.every((itemId, index) => (normalized.cells[index]?.itemId ?? null) === itemId);
-  }) ?? null;
+  return (
+    RECIPES.find((recipe) => {
+      if (recipe.type === 'smelting') return false;
+      if (recipe.type === 'shapeless') {
+        const expected = recipe.pattern.filter((item): item is string => Boolean(item));
+        return (
+          occupied.length === expected.length &&
+          expected.every((itemId) => occupied.some((stack) => stack.itemId === itemId))
+        );
+      }
+      if (normalized.width !== recipe.width || normalized.height !== recipe.height) return false;
+      return recipe.pattern.every((itemId, index) => (normalized.cells[index]?.itemId ?? null) === itemId);
+    }) ?? null
+  );
 }
 
 export function craft(
@@ -71,7 +150,8 @@ export function craft(
   recipe: Recipe
 ): { inventory: Array<ItemStack | null>; grid: Array<ItemStack | null> } | null {
   if (findCraftingRecipe(grid, width, height)?.id !== recipe.id) return null;
-  const nextGrid = grid.map((stack) => (stack ? { ...stack, count: stack.count - 1 } : null))
+  const nextGrid = grid
+    .map((stack) => (stack ? { ...stack, count: stack.count - 1 } : null))
     .map((stack) => (stack && stack.count > 0 ? stack : null));
   const added = addItem(inventory, recipe.result.itemId, recipe.result.count);
   if (added.remainder > 0) return null;

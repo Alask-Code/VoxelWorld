@@ -1,11 +1,5 @@
 import { findSpawn, createInitialSnapshot, parseSeed, WORLD_FORMAT_VERSION } from '../domain/world';
-import type {
-  Difficulty,
-  GameMode,
-  StoredWorld,
-  WorldManifest,
-  WorldSnapshot
-} from '../domain/world';
+import type { Difficulty, GameMode, StoredWorld, WorldManifest, WorldSnapshot } from '../domain/world';
 
 const STORAGE_KEY = 'voxelworld.worlds.v1';
 

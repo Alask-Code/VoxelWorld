@@ -41,25 +41,16 @@ export default function testInventoryOperations() {
   assert.equal(damageItem(nearlyBrokenPickaxe, 0)[0], null);
   assert.deepEqual(damageItem(added.inventory, 0)[0], added.inventory[0]);
 
+  assert.deepEqual(transferStackAtCursor({ itemId: 'oak_planks', count: 5 }, null, true), {
+    slot: { itemId: 'oak_planks', count: 2 },
+    cursor: { itemId: 'oak_planks', count: 3 }
+  });
+  assert.deepEqual(transferStackAtCursor(null, { itemId: 'oak_planks', count: 5 }, true), {
+    slot: { itemId: 'oak_planks', count: 1 },
+    cursor: { itemId: 'oak_planks', count: 4 }
+  });
   assert.deepEqual(
-    transferStackAtCursor({ itemId: 'oak_planks', count: 5 }, null, true),
-    {
-      slot: { itemId: 'oak_planks', count: 2 },
-      cursor: { itemId: 'oak_planks', count: 3 }
-    }
-  );
-  assert.deepEqual(
-    transferStackAtCursor(null, { itemId: 'oak_planks', count: 5 }, true),
-    {
-      slot: { itemId: 'oak_planks', count: 1 },
-      cursor: { itemId: 'oak_planks', count: 4 }
-    }
-  );
-  assert.deepEqual(
-    transferStackBetweenSlots(
-      { itemId: 'oak_planks', count: 10 },
-      { itemId: 'oak_planks', count: 60 }
-    ),
+    transferStackBetweenSlots({ itemId: 'oak_planks', count: 10 }, { itemId: 'oak_planks', count: 60 }),
     {
       source: { itemId: 'oak_planks', count: 6 },
       target: { itemId: 'oak_planks', count: 64 }
