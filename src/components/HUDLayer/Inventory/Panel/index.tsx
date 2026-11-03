@@ -407,7 +407,7 @@ export default function InventoryPanel({
         {creative && (
           <section className="mt-5 border-2 border-[#555] bg-[#aaa] p-3 shadow-[inset_2px_2px_0_#ddd,inset_-2px_-2px_0_#777]">
             <h3 className="mb-3 text-sm font-black [text-shadow:1px_1px_0_#ddd]">Catálogo criativo</h3>
-            <div className="grid max-h-56 grid-cols-2 gap-2 overflow-y-auto pr-1 sm:grid-cols-3 lg:grid-cols-5">
+            <div className="grid max-h-56 grid-cols-2 gap-2 overflow-y-auto pr-1">
               {ITEMS.map((item) => (
                 <button
                   className="flex min-w-0 items-center gap-2 border-2 border-[#555] bg-[#888] p-2 text-left text-xs font-bold text-white shadow-[inset_2px_2px_0_#aaa,inset_-2px_-2px_0_#555] hover:bg-[#999] active:translate-y-0.5"

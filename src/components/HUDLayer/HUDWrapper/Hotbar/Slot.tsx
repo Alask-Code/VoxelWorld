@@ -13,30 +13,16 @@ interface HotbarSlotProps {
 export default function HotbarSlot({ index, stack, selectedSlot, selectSlotFunction }: HotbarSlotProps) {
   return (
     <button
-      aria-label={`Atalho ${index + 1}${stack ? `: ${itemName(stack.itemId)}` : ': vazio'}`}
-      aria-pressed={selectedSlot === index}
-      className={`relative flex aspect-square size-23 flex-col items-center border-2 justify-center text-xs ${
-        selectedSlot === index && 'bg-yellow-200'
+      className={`flex relative aspect-square size-14 bg-stone-800 text-stone-300 py-1 flex-col items-center border border-stone-700 justify-center text-xs ${
+        selectedSlot === index && 'bg-emerald-600! text-emerald-400!'
       }`}
       key={stack?.itemId}
       onClick={selectSlotFunction}
-      title={stack ? itemName(stack.itemId) : 'Slot vazio'}
-      type="button"
     >
-      <span className="absolute left-2 top-1 text-[9px]">{index + 1}</span>
       {stack && (
         <>
           <ItemIcon itemId={stack.itemId} />
-          <span className="max-w-full truncate text-[8px] font-bold [text-shadow:1px_1px_0_#000] sm:text-[9px]">
-            {itemName(stack.itemId)}
-          </span>
-          <span
-            className={`item-count ${
-              itemById.get(stack.itemId)?.durability ? 'has-durability' : ''
-            } absolute bottom-0.5 right-1 text-xs font-black  [text-shadow:1px_1px_0_#000]`}
-          >
-            {stack.count}
-          </span>
+          <p className="text-xl absolute bottom-1 right-1">{stack.count}</p>
           <DurabilityBar stack={stack} />
         </>
       )}

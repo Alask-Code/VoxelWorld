@@ -3,7 +3,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { loadWorld, saveWorld } from '../application/worldStorage';
 import VoxelWorld from '../engine/VoxelWorld';
 import { useGameStore } from '../stores/game';
-import { useSettingsStore } from '../stores/settings';
 import requestGamePointerLock from '../engine/pointerLock';
 import InventoryPanel from '../components/HUDLayer/Inventory/Panel';
 import HUDWrapper from '../components/HUDLayer/HUDWrapper';
@@ -14,13 +13,11 @@ export default function Game() {
   const world = useGameStore((state) => state.world);
   const snapshot = useGameStore((state) => state.snapshot);
   const overlay = useGameStore((state) => state.overlay);
-  const submerged = useGameStore((state) => state.submerged);
   const setWorld = useGameStore((state) => state.setWorld);
   const setSnapshot = useGameStore((state) => state.setSnapshot);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [saving, setSaving] = useState(false);
-  const uiScale = useSettingsStore((state) => state.uiScale);
   const saveRef = useRef<() => Promise<boolean>>(async () => false);
   const canvasRef = useRef<HTMLDivElement>(null);
   const reportEngineError = useCallback((message: string) => setError(message), []);
@@ -32,10 +29,7 @@ export default function Game() {
     }
     requestGamePointerLock(canvas, reportEngineError);
   }, [reportEngineError]);
-  const openInventory = useCallback(() => {
-    useGameStore.getState().setOverlay('inventory');
-    if (document.pointerLockElement) document.exitPointerLock();
-  }, []);
+
   const resumeGame = useCallback(() => {
     useGameStore.getState().setOverlay('none');
     captureGameCursor();
@@ -150,16 +144,11 @@ export default function Game() {
     );
 
   return (
-    <main
-      className={`relative flex h-screen items-center justify-center overflow-hidden bg-[#303030] ${
-        submerged ? 'border-12 border-blue-700/70' : ''
-      }`}
-      style={{ '--ui-scale': uiScale } as React.CSSProperties}
-    >
+    <main className="flex h-screen items-center justify-center overflow-hidden">
       <div className="size-full bg-[#303030]" ref={canvasRef}>
         <VoxelWorld world={world} paused={overlay !== 'none'} onError={reportEngineError} />
       </div>
-      <HUDWrapper world={world} snapshot={snapshot} onOpenInventory={openInventory} />
+      <HUDWrapper world={world} snapshot={snapshot} />
       {error && (
         <p
           className="fixed left-1/2 top-4 z-50 -translate-x-1/2 border-2 border-[#171717] bg-[#8b2929] p-3 font-mono text-sm text-white shadow-[inset_2px_2px_0_#bd5555,inset_-2px_-2px_0_#501313,3px_3px_0_#111]"
@@ -177,7 +166,7 @@ export default function Game() {
         />
       )}
       {overlay === 'pause' && (
-        <div className="fixed inset-0 z-50 flex size-full items-center justify-center bg-black/70 p-4 font-mono">
+        <div className="fixed inset-0 z-50 flex size-full items-center justify-center bg-black/10 p-4 font-mono">
           <section
             className="w-full max-w-lg border-4 border-[#171717] bg-[#c6c6c6] p-5 text-center text-[#303030] shadow-[inset_4px_4px_0_#fff,inset_-4px_-4px_0_#555,8px_8px_0_#111]"
             aria-labelledby="pause-title"
