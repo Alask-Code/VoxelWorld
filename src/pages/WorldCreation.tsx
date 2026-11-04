@@ -37,7 +37,7 @@ export default function WorldCreation() {
       <section>
         <p>PREPARE SUA PRÓXIMA JORNADA</p>
         <h1>Criar mundo</h1>
-        <form onSubmit={(event) => void submit(event)}>
+        <form onSubmit={(event) => submit(event)}>
           <label>
             Nome do mundo
             <input maxLength={32} onChange={(event) => setName(event.target.value)} required value={name} />

@@ -1,5 +1,4 @@
 import React from 'react';
-import { itemName, itemById } from '../../../../domain/content';
 import ItemIcon from '../../../ItemIcon';
 import DurabilityBar from '../../DurabilityBar';
 

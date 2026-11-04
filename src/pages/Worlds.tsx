@@ -5,10 +5,10 @@ import { deleteWorld, listWorlds, renameWorld } from '../application/worldStorag
 import type { WorldManifest } from '../domain/world';
 import SafeView from '../components/UiLayer/SafeView';
 import LinkButton from '../components/UiLayer/LinkButton';
-import NavigateButton from '../components/UiLayer/NavigateButton';
+import WorldButton from '../components/UiLayer/WorldButton';
 
 function formatDate(timestamp: number): string {
-  return new Intl.DateTimeFormat('pt-BR', { dateStyle: 'medium', timeStyle: 'short' }).format(timestamp);
+  return new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short', timeStyle: 'short' }).format(timestamp);
 }
 
 export default function Worlds() {
@@ -66,9 +66,9 @@ export default function Worlds() {
         backgroundSize: 'cover'
       }}
     >
-      <section className="bg-stone-400 p-2 gap-2 flex flex-col *:text-white border-2">
-        <h1 className="px-2 text-5xl">Seus mundos</h1>
-        {error && <p role="alert">{error}</p>}
+      <section className="bg-stone-400 justify-between size-5/6 p-2 gap-2 flex flex-col border-2">
+        <h1 className="px-2 text-5xl border-b-2">Seus mundos</h1>
+        {error && <p className="text-red-500">{error}</p>}
         {loading ? (
           <p>Carregando mundos…</p>
         ) : worlds.length === 0 ? (
@@ -78,48 +78,26 @@ export default function Worlds() {
             <p>Crie seu primeiro mundo para começar a explorar.</p>
           </div>
         ) : (
-          <div>
+          <div className="flex flex-col gap-2 p-2 border-2 h-full bg-stone-500">
             {worlds.map((world) => (
-              <article key={world.id} className="border-2 bg-stone-600 flex">
-                <div aria-hidden="true">▧</div>
-                <div className="bg-zinc-700">
-                  {renaming === world.id ? (
-                    <form
-                      onSubmit={(event) => {
-                        event.preventDefault();
-                        saveName(world.id);
-                      }}
-                    >
-                      <input maxLength={32} onChange={(event) => setNewName(event.target.value)} value={newName} />
-                      <button type="submit">Salvar</button>
-                      <button onClick={() => setRenaming(null)} type="button">
-                        Cancelar
-                      </button>
-                    </form>
-                  ) : (
-                    <h2>{world.name}</h2>
-                  )}
-                  <p>
-                    {world.mode === 'creative' ? 'Criativo' : 'Sobrevivência'} · {world.difficulty} · Seed {world.seed}
-                  </p>
-                  <span>Última sessão: {formatDate(world.lastPlayedAt)}</span>
-                </div>
-                <div>
-                  <NavigateButton onClick={() => navigate(`/game/${world.id}`)} label="Entrar" />
-                  <NavigateButton
-                    onClick={() => {
-                      setRenaming(world.id);
-                      setNewName(world.name);
-                    }}
-                    label="Renomear"
-                  />
-                  <NavigateButton onClick={() => remove(world)} label="Excluir" />
-                </div>
-              </article>
+              <WorldButton
+                key={world.id}
+                world={world}
+                renaming={renaming}
+                newName={newName}
+                setFunctions={{
+                  Renaming: setRenaming,
+                  NewName: setNewName,
+                  saveName,
+                  remove,
+                  formatDate,
+                  navigate
+                }}
+              />
             ))}
           </div>
         )}
-        <div className="w-full flex justify-between">
+        <div className="w-full flex pt-2 justify-between border-t-2">
           <LinkButton to="/">Menu principal</LinkButton>
           <LinkButton to="/worlds/new">Criar mundo</LinkButton>
         </div>

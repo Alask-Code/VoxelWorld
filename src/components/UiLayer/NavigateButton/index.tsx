@@ -7,7 +7,7 @@ interface NavigateButtonProps {
 
 export default function NavigateButton({ label, onClick }: NavigateButtonProps) {
   return (
-    <button onClick={onClick} className="text-white font-bold px-2 border-2 ">
+    <button onClick={onClick} className="border-2 px-8 bg-emerald-600 cursor-pointer text-2xl">
       {label}
     </button>
   );

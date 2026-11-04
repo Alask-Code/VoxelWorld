@@ -12,11 +12,11 @@ export default function HUDWrapper({ world, snapshot }: { world: StoredWorld; sn
   const selectedStack = snapshot.inventory[selectedSlot];
 
   return (
-    <div className="fixed flex flex-col w-screen h-screen items-center justify-end p-2">
+    <div className="fixed flex flex-col pointer-events-none w-screen h-screen items-center justify-end p-2">
       {world.manifest.mode === 'survival' && <SurvivalPanel snapshot={snapshot} />}
       <Crossbar />
       {miningProgress > 0 && <MiningProgress progress={miningProgress} />}
-      {selectedStack && <Tooltip itemId={selectedStack.itemId} />}
+      <Tooltip itemId={selectedStack ? selectedStack.itemId : 'Nada na Mão'} />
       <Hotbar snapshot={snapshot} selectedSlot={selectedSlot} selectSlot={selectSlot} />
     </div>
   );
